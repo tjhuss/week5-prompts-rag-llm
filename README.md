@@ -17,6 +17,7 @@ pip install -r requirements.txt
 | Folder | Contents |
 | --- | --- |
 | `day1/` | Prompt engineering notebook -- zero-shot/few-shot prompting, role prompting, system prompts, prompt templates, structured output, temperature/top-k/top-p, hallucination |
+| `day2/` | Local LLM notebook -- CPU vs GPU, quantization, Ollama, Hugging Face model loading, tokenizer, pipeline, chat template |
 
 ## Day 1: Prompt Engineering and Structured Output
 
@@ -74,6 +75,44 @@ Also worth flagging: the very first output in the notebook (before any
 of the above) was a hallucinated stock number invented out of nowhere --
 a real reminder that ungrounded generation defaults to confidently
 making things up, not just occasionally.
+
+## Day 2: Local LLM, GPU Usage, and Hugging Face Workflow
+
+**Key learning areas:** CPU vs GPU, VRAM, CUDA basics, quantization,
+4-bit, 8-bit, Ollama, LM Studio, llama.cpp, vLLM overview, Hugging Face
+model loading, tokenizer, pipeline, chat template.
+
+**Practical task:** run a local (or API) LLM and test inference.
+
+**Deliverable:** Local/API LLM demo (`day2/`).
+
+Planned outline:
+1. CPU vs GPU, VRAM, and CUDA -- what actually changes about running a
+   model depending on the hardware. Worth being upfront about here: this
+   machine is a MacBook Air, so there's no NVIDIA GPU/CUDA to demo
+   directly -- Apple Silicon uses its own Metal/MPS backend instead. The
+   concepts (why GPUs are faster for this, what VRAM limits) still get
+   covered, just without a CUDA demo to point at.
+2. quantization (4-bit / 8-bit) -- running a model at reduced numeric
+   precision to cut memory/VRAM use, at some cost to accuracy. Concept
+   overview, likely without a from-scratch quantization run given the
+   hardware constraint above.
+3. Ollama vs LM Studio vs llama.cpp vs vLLM -- what each one actually is
+   and who it's for (Ollama: simplest CLI-based local runner, good fit
+   here; LM Studio: GUI wrapper around the same idea; llama.cpp: the
+   underlying inference engine a lot of these are built on; vLLM: a
+   production-serving engine built for throughput, not local single-user
+   use).
+4. practical: install Ollama, pull a small local model, run inference
+   from Python against it -- actual local LLM usage, not just an API call
+5. separately, load a small model directly through Hugging Face
+   (`AutoModel`, `AutoTokenizer`, `pipeline`) to contrast "a service
+   running a model for you" (Ollama) vs. "you load and run the model
+   yourself" (Hugging Face) -- same underlying idea, different level of
+   control
+6. chat templates -- how a chat-tuned model expects turns to be formatted
+   (system/user/assistant roles) versus the plain single-string prompts
+   used all through Day 1
 
 ## Week 5 roadmap
 
