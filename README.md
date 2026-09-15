@@ -84,35 +84,42 @@ model loading, tokenizer, pipeline, chat template.
 
 **Practical task:** run a local (or API) LLM and test inference.
 
-**Deliverable:** Local/API LLM demo (`day2/`).
+**Deliverable:** `day2/day2_local_llm.ipynb`.
 
-Planned outline:
-1. CPU vs GPU, VRAM, and CUDA -- what actually changes about running a
-   model depending on the hardware. Worth being upfront about here: this
-   machine is a MacBook Air, so there's no NVIDIA GPU/CUDA to demo
-   directly -- Apple Silicon uses its own Metal/MPS backend instead. The
-   concepts (why GPUs are faster for this, what VRAM limits) still get
-   covered, just without a CUDA demo to point at.
-2. quantization (4-bit / 8-bit) -- running a model at reduced numeric
-   precision to cut memory/VRAM use, at some cost to accuracy. Concept
-   overview, likely without a from-scratch quantization run given the
-   hardware constraint above.
-3. Ollama vs LM Studio vs llama.cpp vs vLLM -- what each one actually is
-   and who it's for (Ollama: simplest CLI-based local runner, good fit
-   here; LM Studio: GUI wrapper around the same idea; llama.cpp: the
-   underlying inference engine a lot of these are built on; vLLM: a
-   production-serving engine built for throughput, not local single-user
-   use).
-4. practical: install Ollama, pull a small local model, run inference
-   from Python against it -- actual local LLM usage, not just an API call
-5. separately, load a small model directly through Hugging Face
-   (`AutoModel`, `AutoTokenizer`, `pipeline`) to contrast "a service
-   running a model for you" (Ollama) vs. "you load and run the model
-   yourself" (Hugging Face) -- same underlying idea, different level of
-   control
-6. chat templates -- how a chat-tuned model expects turns to be formatted
-   (system/user/assistant roles) versus the plain single-string prompts
-   used all through Day 1
+Installed Ollama via Homebrew, pulled `llama3.2:3b` (~2GB), and ran real
+local inference against it through Ollama's local REST API
+(`localhost:11434`) -- no API key, nothing leaving the machine after the
+model finished downloading.
+
+- **Knowledge cutoff, caught live** -- asked the local model about
+  Tesla's current vehicle lineup and got an answer accurate as of a
+  while ago, not now, stated with full confidence. Same root cause as
+  Day 1's hallucinated Dow Jones number: the model has no live
+  connection to the world, only whatever got frozen into it during
+  training. Directly motivates RAG later this week.
+- **Ollama vs. Hugging Face** -- loaded `TinyLlama-1.1B-Chat` directly
+  through `transformers.pipeline` to contrast a service that runs a
+  model for you (Ollama, one API call) against loading and controlling
+  the model yourself (Hugging Face, own tokenizer/generation settings).
+- **Chat templates, the hard way** -- a plain string prompt sent to
+  TinyLlama-Chat (a chat-tuned model) with no chat template applied
+  didn't get answered at all -- the model just generated more
+  similar-looking questions instead of responding, the same base-model
+  continuation behavior as Day 6's GPT-2. Switching to a proper
+  role/content message list (letting the pipeline apply the model's
+  real chat template) fixed it immediately -- same model, same
+  question, real answers both times.
+- **A real hallucination, caught mid-comparison** -- the raw (broken)
+  Overwatch answer described "orcs, trolls" as being in the game, which
+  is actually Warcraft, a different Blizzard title entirely. The chat
+  template version fixed the *structural* problem (answering at all)
+  but not this -- a model can follow format perfectly and still blend
+  facts from somewhere else with total confidence.
+- **CPU vs. GPU, VRAM, CUDA, quantization, and the local-LLM tooling
+  landscape** (Ollama, LM Studio, llama.cpp, vLLM) -- covered
+  conceptually in the notebook itself. This machine is a MacBook Air
+  with no NVIDIA GPU, so these are understood rather than benchmarked
+  directly here.
 
 ## Week 5 roadmap
 
