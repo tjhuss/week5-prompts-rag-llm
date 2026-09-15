@@ -122,40 +122,6 @@ model finished downloading.
   with no NVIDIA GPU, so these are understood rather than benchmarked
   directly here.
 
-## Day 3: Fine-Tuning Concepts and LoRA/QLoRA Workflow
-
-**Key learning areas:** prompting vs. fine-tuning, instruction dataset,
-JSONL format, chat template, LoRA, QLoRA, PEFT, learning rate, batch
-size, epochs, adapter saving, overfitting.
-
-**Practical task:** prepare a fine-tuning dataset and document the
-workflow -- the curriculum itself scopes today's deliverable as the
-dataset plus a written workflow, not a full training run.
-
-**Deliverable:** fine-tuning dataset (JSONL) and workflow document
-(`day3/`).
-
-Planned outline:
-1. prompting vs. fine-tuning -- what fine-tuning actually changes (the
-   model's own weights) versus what prompting changes (nothing about
-   the model, just what gets fed into it each time)
-2. build a real instruction dataset in JSONL format from this project's
-   own news headlines -- converting headline/category pairs into
-   instruction/response examples, the same shape a real fine-tuning job
-   would expect
-3. LoRA and QLoRA -- training small adapter layers instead of the full
-   model's weights, QLoRA adding quantization on top of that same idea
-   to cut memory further. PEFT (parameter-efficient fine-tuning) is the
-   umbrella term this and other similar techniques fall under
-4. learning rate, batch size, epochs, adapter saving, and overfitting,
-   revisited specifically in a fine-tuning context rather than
-   training-from-scratch
-5. worth flagging up front: this machine has no NVIDIA GPU, and a real
-   LoRA/QLoRA training run is genuinely impractical on CPU -- same
-   honesty as Day 2's CUDA section. The dataset and workflow document
-   are real and complete; an actual trained adapter isn't the
-   deliverable the curriculum asks for today anyway
-
 ## Week 5 roadmap
 
 | Day | Topic | Deliverable |
