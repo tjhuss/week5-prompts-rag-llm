@@ -122,6 +122,47 @@ model finished downloading.
   with no NVIDIA GPU, so these are understood rather than benchmarked
   directly here.
 
+## Day 3: Fine-Tuning Concepts and LoRA/QLoRA Workflow
+
+**Key learning areas:** prompting vs. fine-tuning, instruction dataset,
+JSONL format, chat template, LoRA, QLoRA, PEFT, learning rate, batch
+size, epochs, adapter saving, overfitting.
+
+**Practical task:** prepare a fine-tuning dataset and document the
+workflow -- the curriculum scopes today's deliverable as the dataset
+plus a written workflow, not a full training run.
+
+**Deliverable:** `day3/day3_finetune_prep.ipynb`, plus the dataset
+files it produces (`finetune_dataset.jsonl`,
+`finetune_dataset_chat.jsonl`, `finetune_train.jsonl`,
+`finetune_val.jsonl`).
+
+Grew the underlying news dataset from 278 to 446 rows first by
+re-running Week 3's scraper -- it broke on marketscreener.com, which
+had added a promo ad element with two `<b>` tags inside one link,
+violating the scraper's assumption of exactly one match. Fixed with
+`.first` on that locator. Category breakdown after growing: Business
+187, Markets 130, Technology 72, Energy 25, Health 20, Politics 12.
+
+- **Instruction dataset** -- all 446 headlines converted into Alpaca-
+  style instruction/input/output examples (classify the headline into
+  one of the six categories), saved as JSONL.
+- **Chat-template version** -- the same examples reshaped into a
+  `messages` (system/user/assistant) format, the shape a chat-tuned
+  model's fine-tuning job would expect instead of Alpaca's flat fields.
+- **Train/validation split** -- 401 train / 45 validation (90/10),
+  mirroring the same train/test split concept used since Week 1, now
+  applied to fine-tuning data specifically.
+- **A real inefficiency caught and fixed** -- the chat-template file
+  write was originally nested inside the loop building the examples,
+  reopening and rewriting the whole file 446 times over instead of
+  once at the end. The final file was correct by accident; fixed by
+  moving the write outside the loop.
+- **LoRA, QLoRA, and PEFT** -- documented in the notebook: LoRA freezes
+  the base model and trains small adapter layers instead of every
+  weight; QLoRA adds 4-bit quantization on top of that same idea; PEFT
+  is the umbrella term for this family of techniques.
+
 ## Week 5 roadmap
 
 | Day | Topic | Deliverable |
