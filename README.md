@@ -137,22 +137,11 @@ files it produces (`finetune_dataset.jsonl`,
 `finetune_dataset_chat.jsonl`, `finetune_train.jsonl`,
 `finetune_val.jsonl`).
 
-Grew the underlying news dataset in three passes, chasing category
-imbalance that would've been a real problem for fine-tuning. First 278
-to 446 rows by re-running Week 3's scraper -- it broke on
-marketscreener.com, which had added a promo ad element with two `<b>`
-tags inside one link, violating the scraper's assumption of exactly
-one match, fixed with `.first` on that locator. Politics still sat at
-only 12 examples after that, so added apnews.com's politics section as
-a new source and expanded the Politics keyword list to catch general
-political language ("Trump," "Democrats," "primaries") instead of just
-finance-adjacent policy terms -- needed the same bot-detection fix as
-marketscreener.com (a real user-agent), and its markup nests the `<a>`
-inside the `<h3>` instead of wrapping it, the opposite structure from
-every other scraper here. That pass alone took Politics from 12 to 49,
-446 to 660 rows total. Energy was still the smallest category at 30
-after that, so added oilprice.com as a dedicated energy source, no
-bot-detection workaround needed there. Final: 843 rows. Category
+Grew the dataset from 278 to 843 rows to fix a real category
+imbalance, Politics and Energy were both too thin to be useful for
+fine-tuning. Added apnews.com for politics and oilprice.com for
+energy, plus expanded the Politics keyword list to catch general
+political terms instead of just finance-adjacent ones. Category
 breakdown: Business 363, Markets 205, Technology 119, Politics 56,
 Energy 56, Health 44.
 
