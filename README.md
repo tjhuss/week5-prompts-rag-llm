@@ -20,6 +20,7 @@ pip install -r requirements.txt
 | `day2/` | Local LLM notebook -- CPU vs GPU, quantization, Ollama, Hugging Face model loading, tokenizer, pipeline, chat template |
 | `day3/` | Fine-tuning dataset (JSONL) and workflow document -- prompting vs fine-tuning, LoRA, QLoRA, PEFT, hyperparameters |
 | `day4/` | RAG notebook and ChromaDB index -- document loading, chunking, chunk overlap, embeddings, vector search |
+| `day5/` | RAG chatbot notebook -- retriever, context injection, source citations, hallucination check, query rewriting |
 
 ## Day 1: Prompt Engineering and Structured Output
 
@@ -116,6 +117,27 @@ URL, title, and category as metadata. Ran two search queries, both
 matched their source article by meaning instead of keywords, the
 Nvidia query never says AMD or GPU but still pulled the right
 AMD-vs-Nvidia article.
+
+## Day 5: Building RAG Chatbot and AI Agent Concepts
+
+**Key learning areas:** retriever, prompt template, context injection,
+source-grounded answers, citations, hallucination reduction, hybrid
+search, reranking, query rewriting, tool calling, AI agents.
+
+**Practical task:** build and improve a RAG chatbot.
+
+**Deliverable:** `day5/day5_rag_chatbot.ipynb`.
+
+Built on top of Day 4's ChromaDB collection. A retriever pulls the
+closest chunks for a question, a prompt template injects them as
+labeled sources, and the model cites which source number(s) it used.
+An off-topic question ("what's the weather in Tokyo") correctly got
+"not enough information" instead of a made up answer, though the
+sources list still showed three unrelated articles, retrieval always
+returns its top matches regardless of relevance. Query rewriting
+swapped one of three retrieved articles after rephrasing a vague
+question, two stayed the same. Hybrid search, reranking, tool calling,
+and AI agents are covered conceptually in the notebook.
 
 ## Week 5 roadmap
 
