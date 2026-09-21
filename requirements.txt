@@ -4,3 +4,6 @@ torch
 transformers
 sentencepiece
 requests
+sentence-transformers
+chromadb
+playwright

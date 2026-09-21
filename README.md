@@ -19,6 +19,7 @@ pip install -r requirements.txt
 | `day1/` | Prompt engineering notebook -- zero-shot/few-shot prompting, role prompting, system prompts, prompt templates, structured output, temperature/top-k/top-p, hallucination |
 | `day2/` | Local LLM notebook -- CPU vs GPU, quantization, Ollama, Hugging Face model loading, tokenizer, pipeline, chat template |
 | `day3/` | Fine-tuning dataset (JSONL) and workflow document -- prompting vs fine-tuning, LoRA, QLoRA, PEFT, hyperparameters |
+| `day4/` | RAG notebook and ChromaDB index -- document loading, chunking, chunk overlap, embeddings, vector search |
 
 ## Day 1: Prompt Engineering and Structured Output
 
@@ -95,6 +96,26 @@ and PEFT are documented in the notebook: LoRA freezes the base model
 and trains small adapter layers instead of every weight, QLoRA adds
 4-bit quantization on top of that, PEFT is the umbrella term for the
 whole family of techniques.
+
+## Day 4: RAG Fundamentals and Vector Databases
+
+**Key learning areas:** RAG concept, fine-tuning vs. RAG, document
+loading, text extraction, chunking, chunk overlap, metadata,
+embeddings, FAISS, ChromaDB, Qdrant, vector search.
+
+**Practical task:** load documents, chunk text, create embeddings,
+store in a vector database.
+
+**Deliverable:** `day4/day4_rag_vectordb.ipynb`, plus the ChromaDB
+index it builds (`day4/chroma_db/`).
+
+Headlines are too short to chunk, so fetched full article text for 30
+fool.com URLs instead. Split into 282 chunks with overlap, embedded
+with `all-MiniLM-L6-v2`, stored in ChromaDB along with each chunk's
+URL, title, and category as metadata. Ran two search queries, both
+matched their source article by meaning instead of keywords, the
+Nvidia query never says AMD or GPU but still pulled the right
+AMD-vs-Nvidia article.
 
 ## Week 5 roadmap
 
