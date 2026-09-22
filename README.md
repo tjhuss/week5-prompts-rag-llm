@@ -21,6 +21,7 @@ pip install -r requirements.txt
 | `day3/` | Fine-tuning dataset (JSONL) and workflow document -- prompting vs fine-tuning, LoRA, QLoRA, PEFT, hyperparameters |
 | `day4/` | RAG notebook and ChromaDB index -- document loading, chunking, chunk overlap, embeddings, vector search |
 | `day5/` | RAG chatbot notebook -- retriever, context injection, source citations, hallucination check, query rewriting |
+| `day6/` | Final capstone demo, report, and presentation outline |
 
 ## Day 1: Prompt Engineering and Structured Output
 
@@ -43,8 +44,8 @@ summarization, unstructured vs. templated extraction, and
 zero-shot vs. context-grounded Q&A. The pattern that held across all
 four: prompting changes how a model says something far more reliably
 than it changes what it actually gets right. Context-grounded Q&A was
-the one case where prompting genuinely fixed the problem, which is
-basically a small preview of RAG. Also caught a real hallucination
+the one case where prompting fixed the problem, which is
+basically a small preview of RAG. Also caught a hallucination
 early on, a confidently invented stock number that wasn't in the input
 at all.
 
@@ -58,16 +59,16 @@ model loading, tokenizer, pipeline, chat template.
 
 **Deliverable:** `day2/day2_local_llm.ipynb`.
 
-Installed Ollama via Homebrew, pulled `llama3.2:3b`, and ran real local
+Installed Ollama via Homebrew, pulled `llama3.2:3b`, and ran local
 inference through Ollama's local API, no API key, nothing leaving the
-machine. Asked it about Tesla's current lineup and caught a real
+machine. Asked it about Tesla's current lineup and caught a
 knowledge-cutoff limitation, a confident but outdated answer. Second
 half loads `TinyLlama-1.1B-Chat` directly through Hugging Face instead,
 contrasting a service that runs a model for you against loading and
 controlling it yourself. A plain prompt with no chat template applied
 didn't get answered at all, the model just generated more questions
 instead of responding, same base-model behavior as Day 6's GPT-2.
-Applying the real chat template fixed that immediately. CPU vs. GPU,
+Applying the chat template fixed that immediately. CPU vs. GPU,
 VRAM, CUDA, quantization, and the local-LLM tooling landscape (Ollama,
 LM Studio, llama.cpp, vLLM) are covered conceptually in the notebook,
 this machine has no NVIDIA GPU.
@@ -87,7 +88,7 @@ files it produces (`finetune_dataset.jsonl`,
 `finetune_dataset_chat.jsonl`, `finetune_train.jsonl`,
 `finetune_val.jsonl`).
 
-Grew the dataset from 278 to 843 rows first to fix a real category
+Grew the dataset from 278 to 843 rows first to fix a category
 imbalance (Politics and Energy were both too thin), adding apnews.com
 and oilprice.com as new sources. Final breakdown: Business 363,
 Markets 205, Technology 119, Politics 56, Energy 56, Health 44. All
@@ -138,6 +139,32 @@ returns its top matches regardless of relevance. Query rewriting
 swapped one of three retrieved articles after rephrasing a vague
 question, two stayed the same. Hybrid search, reranking, tool calling,
 and AI agents are covered conceptually in the notebook.
+
+## Day 6: Final Capstone Presentation and Evaluation
+
+**Key learning areas:** final project demo, code review, model
+explanation, RAG explanation, viva, feedback, final assessment.
+
+**Practical task:** present the complete project.
+
+**Deliverable:** `day6/day6_final_demo.ipynb`, `FINAL_REPORT.md`,
+`PRESENTATION_OUTLINE.md`.
+
+One script ties classification and the RAG chatbot together, running
+against an expanded ChromaDB collection (100 of 103 fool.com articles,
+3 timed out on a different page template, 1062 chunks). Classification
+accuracy tested across 50 random headlines over five runs: 44 percent,
+compared against Week 4's fine-tuned DistilBERT at 69.6 percent on the
+same categories. Found and fixed a reliability bug in the RAG
+chatbot's generation step, it was randomly refusing to answer even
+with relevant sources retrieved, fixed by lowering temperature and
+loosening the refusal instruction, confirmed with zero refusals across
+three separate 10-run tests. Testing across more headlines also
+surfaced citation problems, an invented source number that didn't
+exist in the given context, and answers given about a topic close to
+what was retrieved but not the one actually asked about. The RAG
+chatbot's coverage is scoped to fool.com, about 12 percent of the
+843-row dataset, documented as a known limitation rather than fixed.
 
 ## Week 5 roadmap
 
